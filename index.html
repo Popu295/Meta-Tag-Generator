@@ -1,0 +1,180 @@
+<style>
+      body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+#meta-tag-form {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 100px;
+}
+
+#generate-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: lightblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#generated-meta-tags, #copy-btn {
+  width: 60%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgb(160, 160, 160);
+}
+
+    </style>
+  
+   
+    <form id="meta-tag-form">
+      <div class="form-group">
+        <label for="site-title">Site Title:</label>
+        <input type="text" id="site-title" name="site-title">
+      </div>
+      <div class="form-group">
+        <label for="site-description">Site Description:</label>
+        <textarea id="site-description" name="site-description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="site-keywords">Site Keywords:</label>
+        <input type="text" id="site-keywords" name="site-keywords">
+      </div>
+      <div class="form-group">
+        <label for="index-robot">Allow robots to index your website?</label>
+        <select id="index-robot" name="index-robot">
+          <option value="index">Index</option>
+          <option value="noindex">NoIndex</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="follow-robot">Allow robots to follow all links?</label>
+        <select id="follow-robot" name="follow-robot">
+          <option value="follow">Follow</option>
+          <option value="nofollow">NoFollow</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="content-type">What type of content will your site display?</label>
+        <select id="content-type" name="content-type">
+          <option value="utf-8">UTF-8</option>
+          <option value="utf-16">UTF-16</option>
+          <option value="iso-8859-1">ISO-8859-1</option>
+          <option value="windows-1250">Windows-1250</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="site-language">What is your site primary language?</label>
+        <input type="text" id="site-language" name="site-language">
+      </div>
+      <div class="form-group">
+        <label for="revisit-after">(Optional) Search engines should revisit this page after:</label>
+        <input type="text" id="revisit-after" name="revisit-after">
+      </div>
+      <div class="form-group">
+        <label for="author">(Optional) Author:</label>
+        <input type="text" id="author" name="author">
+        </div>
+        <button type="button" id="generate-btn">Generate Meta Tags</button>
+        <button type="button" id="copy-btn" style="display: none;">Copy</button>
+        
+        </form>
+        <div id="generated-meta-tags" style="display: none;"></div>
+        <script>
+
+document.getElementById("generate-btn").addEventListener("click", function() {
+  const form = document.getElementById("meta-tag-form");
+  if (!form) {
+    console.error("Form not found!");
+    return;
+  }
+
+  const siteTitle = form.elements["site-title"].value;
+  const siteDescription = form.elements["site-description"].value;
+  const siteKeywords = form.elements["site-keywords"].value;
+  const indexRobot = form.elements["index-robot"].value;
+  const followRobot = form.elements["follow-robot"].value;
+  const contentType = form.elements["content-type"].value;
+  const siteLanguage = form.elements["site-language"].value;
+  const revisitAfter = form.elements["revisit-after"].value;
+  const author = form.elements["author"].value;
+
+  const generatedMetaTags = document.getElementById("generated-meta-tags");
+  if (!generatedMetaTags) {
+    console.error("Generated meta tags container not found!");
+    return;
+  }
+
+  generatedMetaTags.style.display = "block";
+  generatedMetaTags.innerHTML = `
+    
+    <p>&lt;title&gt;${siteTitle}&lt;/title&gt;</p>
+    <p>&lt;meta name="description" content="${siteDescription}"&gt;</p>
+    <p>&lt;meta name="keywords" content="${siteKeywords}"&gt;</p>
+    <p>&lt;meta name="robots" content="${indexRobot},${followRobot}"&gt;</p>
+    <p>&lt;meta http-equiv="Content-Type" content="text/html; charset=${contentType}"&gt;</p>
+    <p>&lt;meta http-equiv="Content-Language" content="${siteLanguage}"&gt;</p>
+    ${
+      revisitAfter
+        ? `<p>&lt;meta name="revisit-after" content="${revisitAfter}"&gt;</p>`
+        : ""
+    }
+    ${author ? `<p>&lt;meta name="author" content="${author}"&gt;</p>` : ""}
+  `;
+});
+
+
+document.getElementById("copy-btn").addEventListener("click", function() {
+  const generatedTags = document.getElementById("generated-meta-tags");
+  if (!generatedTags) {
+    console.error("Generated meta tags not found!");
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = generatedTags.innerText;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+
+  alert("Copied to clipboard!");
+});
+
+const generateBtn = document.getElementById("generate-btn");
+generateBtn.addEventListener("click", function() {
+  const copyBtn = document.getElementById("copy-btn");
+  copyBtn.style.display = "inline-block";
+});
+
+
+</script>
